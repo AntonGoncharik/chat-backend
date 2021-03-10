@@ -1,0 +1,36 @@
+{
+  "env": {
+    "node": true,
+    "commonjs": true,
+    "es6": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "airbnb-base/legacy"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaVersion": 11
+  },
+  "rules": {
+    "no-use-before-define": "off",
+    "function-paren-newline": "off",
+    "global-require": 0,
+    "import/prefer-default-export": "off",
+    "class-methods-use-this": "off",
+    "import/no-named-as-default": "off",
+    "import/no-named-as-default-member": "off",
+    "max-len": [
+      "error",
+      {
+        "code": 120
+      }
+    ],
+    "no-useless-catch": "off",
+    "comma-dangle": ["error", "always-multiline"],
+    "strict": ["error", "never"]
+  }
+}

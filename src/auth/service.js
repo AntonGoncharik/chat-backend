@@ -30,9 +30,9 @@ const loginUser = (email, password) => {
 
     const token = jwt.sign({
       id: user.id,
-          date: Date.now(),
-        typ: 'JWT', 
-         sub: 'auth',
+      date: Date.now(),
+      typ: 'JWT',
+      sub: 'auth',
     }, tokenKey, { algorithm });
 
     const refreshToken = jwt.sign({
@@ -40,8 +40,8 @@ const loginUser = (email, password) => {
     }, refreshTokenKey, { algorithm });
 
     return {
-      id: user.id, 
-      token, 
+      id: user.id,
+      token,
       refreshToken,
     };
   } catch (error) {
@@ -94,8 +94,8 @@ const checkUser = (req, res, next) => {
         next(error);
       }
     });
-  } else if ((req.url === routes.users.main && req.method === 'POST') 
-  || req.url === routes.authorize.login) {
+  } else if ((req.url === routes.users.main && req.method === 'POST')
+    || req.url === routes.authorize.login) {
     next();
   } else {
     next({ code: 401, message: 'Invalid token' });

@@ -5,6 +5,10 @@
   "repository": "git@github.com:AntonGoncharik/chat-backend.git",
   "author": "AntonGoncharik <ant.goncharik@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start-prod": "node index.js --production",
+    "start-dev": "nodemon index.js --development"
+  }, 
   "devDependencies": {
     "eslint": "^7.21.0",
     "eslint-config-airbnb-base": "^14.2.1",

@@ -5,10 +5,12 @@ const journal = require('../modules/logger');
 const throwError = require('../errors/throw-error');
 const { routes } = require('../config');
 
-const { tokenKey, refreshTokenKey, algorithm, tokenLiveTimeMs } = require('./constants');
-const repository = require('./repository');
+const {
+  tokenKey, refreshTokenKey, algorithm, tokenLiveTimeMs,
+} = require('./constants');
+const repository = require('../users/repository');
 
-const loginUser = (email, password) => {
+const loginUser = async (email, password) => {
   try {
     if (!email) {
       throwError(`Authorize email is ${email}`, 401);
@@ -49,7 +51,7 @@ const loginUser = (email, password) => {
   }
 };
 
-const logoutUser = (token, refreshToken) => {
+const logoutUser = async (token, refreshToken) => {
   try {
     if (!token) {
       throwError('Token is not specified', 400);
@@ -63,37 +65,39 @@ const logoutUser = (token, refreshToken) => {
 
 const checkUser = (req, res, next) => {
   if (req.headers.authorization) {
-    jwt.verify(req.headers.authorization.split(' ')[1], tokenKey, { algorithms: [algorithm] }, async (error, payload) => {
-      if (error) {
-        journal.auth.warn(`${error}. TOKEN: ${req.headers.authorization}`);
-        next({ code: 401, message: 'Invalid token' });
-        return;
-      }
-
-      if (payload && !payload.id) {
-        journal.auth.warn('Token is not contain user id');
-        next({ code: 401, message: 'Invalid token' });
-        return;
-      }
-
-      if (payload.date + tokenLiveTimeMs < Date.now()) {
-        next({ code: 401, message: 'Token is dead' });
-        return;
-      }
-
-      try {
-        const user = await repository.getUserById(payload.id);
-
-        if (!user) {
-          throwError(`User with id ${payload.id} is not exist`, 404);
+    jwt.verify(req.headers.authorization.split(' ')[1],
+      tokenKey, { algorithms: [algorithm] }, async (err, payload) => {
+        if (err) {
+          journal.auth.error(`CHECK USER TOKEN ${req.headers.authorization}`);
+          next({ code: 401, message: 'Invalid token' });
+          return;
         }
 
-        next();
-      } catch (error) {
-        journal.auth.error(`CheckToken request with Auth header ${error}`);
-        next(error);
-      }
-    });
+        if (payload && !payload.id) {
+          journal.auth.error('TOKEN IS NOT CONTAIN USER ID');
+          next({ code: 401, message: 'Invalid token' });
+          return;
+        }
+
+        if (payload.date + tokenLiveTimeMs < Date.now()) {
+          journal.auth.error('TOKEN IS DEAD');
+          next({ code: 401, message: 'Token is dead' });
+          return;
+        }
+
+        try {
+          const user = await repository.getUserById(payload.id);
+
+          if (!user) {
+            throwError(`User with id ${payload.id} is not exist`, 404);
+          }
+
+          next();
+        } catch (error) {
+          journal.auth.error(`CHECK USER TOKEN ${error}`);
+          next(error);
+        }
+      });
   } else if ((req.url === routes.users.main && req.method === 'POST')
     || req.url === routes.authorize.login) {
     next();

@@ -1,22 +1,30 @@
 const User = require('./model');
 
 const getUserById = async (id) => {
-  const user = {};
+  try {
+    const result = await User.findById(id);
 
-  return user;
+    return result;
+  } catch (error) {
+    throw error;
+  }
 };
 
 const getUserByEmail = async (email) => {
-  const user = {};
+  try {
+    const result = await User.findOne({ email });
 
-  return user;
+    return result;
+  } catch (error) {
+    throw error;
+  }
 };
 
 const createUser = async (data) => {
   try {
-    const user = await new User(data).save();
+    const result = await new User(data).save();
 
-    return user;
+    return result;
   } catch (error) {
     throw error;
   }

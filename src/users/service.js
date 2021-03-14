@@ -8,11 +8,11 @@ const repository = require('./repository');
 const createUser = async (email, password) => {
   try {
     if (!email) {
-      throwError('Email not found', 404);
+      throwError('Not transferred Email', 400);
     }
 
     if (!password) {
-      throwError('Password not found', 404);
+      throwError('Not transferred password', 400);
     }
 
     const salt = await bcrypt.genSalt();

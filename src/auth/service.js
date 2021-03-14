@@ -13,11 +13,11 @@ const repository = require('../users/repository');
 const loginUser = async (email, password) => {
   try {
     if (!email) {
-      throwError(`Authorize email is ${email}`, 401);
+      throwError('Not transferred Email', 400);
     }
 
     if (!password) {
-      throwError(`Authorize password is ${password}`, 401);
+      throwError('Not transferred password', 400);
     }
 
     const user = await repository.getUserByEmail(email);
@@ -31,18 +31,13 @@ const loginUser = async (email, password) => {
     }
 
     const token = jwt.sign({
-      id: user.id,
-      date: Date.now(),
-      typ: 'JWT',
-      sub: 'auth',
+      id: user.id, date: Date.now(), typ: 'JWT', sub: 'auth',
     }, tokenKey, { algorithm });
 
-    const refreshToken = jwt.sign({
-      id: user.id,
-    }, refreshTokenKey, { algorithm });
+    const refreshToken = jwt.sign({ id: user.id }, refreshTokenKey, { algorithm });
 
     return {
-      id: user.id,
+      user,
       token,
       refreshToken,
     };
@@ -54,7 +49,7 @@ const loginUser = async (email, password) => {
 const logoutUser = async (token, refreshToken) => {
   try {
     if (!token) {
-      throwError('Token is not specified', 400);
+      throwError('Not transferred token', 400);
     }
 
     await repository.logoutUser(token, refreshToken);
@@ -89,7 +84,7 @@ const checkUser = (req, res, next) => {
           const user = await repository.getUserById(payload.id);
 
           if (!user) {
-            throwError(`User with id ${payload.id} is not exist`, 404);
+            throwError('User not found', 404);
           }
 
           next();

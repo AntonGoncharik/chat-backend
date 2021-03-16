@@ -2,9 +2,9 @@ const repository = require('./repository');
 
 const getRooms = async () => {
   try {
-    const rooms = await repository.getRooms();
+    const result = await repository.getRooms();
 
-    return rooms;
+    return result;
   } catch (error) {
     throw error;
   }
@@ -12,9 +12,9 @@ const getRooms = async () => {
 
 const createRoom = async () => {
   try {
-    const room = await repository.createRoom();
+    const result = await repository.createRoom();
 
-    return room;
+    return result;
   } catch (error) {
     throw error;
   }
@@ -22,9 +22,9 @@ const createRoom = async () => {
 
 const updateRoom = async () => {
   try {
-    const room = await repository.updateRoom();
+    const result = await repository.updateRoom();
 
-    return room;
+    return result;
   } catch (error) {
     throw error;
   }
@@ -32,9 +32,9 @@ const updateRoom = async () => {
 
 const deleteRoom = async () => {
   try {
-    const room = await repository.deleteRoom();
+    const result = await repository.deleteRoom();
 
-    return room;
+    return result;
   } catch (error) {
     throw error;
   }

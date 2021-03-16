@@ -2,9 +2,9 @@ const repository = require('./repository');
 
 const getMessages = async () => {
   try {
-    const messages = await repository.getMessages();
+    const result = await repository.getMessages();
 
-    return messages;
+    return result;
   } catch (error) {
     throw error;
   }
@@ -12,9 +12,9 @@ const getMessages = async () => {
 
 const createMessage = async () => {
   try {
-    const message = await repository.createMessage();
+    const result = await repository.createMessage();
 
-    return message;
+    return result;
   } catch (error) {
     throw error;
   }
@@ -22,9 +22,9 @@ const createMessage = async () => {
 
 const updateMessage = async () => {
   try {
-    const message = await repository.updateMessage();
+    const result = await repository.updateMessage();
 
-    return message;
+    return result;
   } catch (error) {
     throw error;
   }
@@ -32,9 +32,9 @@ const updateMessage = async () => {
 
 const deleteMessage = async () => {
   try {
-    const message = await repository.deleteMessage();
+    const result = await repository.deleteMessage();
 
-    return message;
+    return result;
   } catch (error) {
     throw error;
   }

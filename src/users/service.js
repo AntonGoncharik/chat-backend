@@ -6,9 +6,9 @@ const repository = require('./repository');
 
 const getUsers = async () => {
   try {
-    const users = await repository.getUsers();
+    const result = await repository.getUsers();
 
-    return users;
+    return result;
   } catch (error) {
     throw error;
   }
@@ -29,9 +29,9 @@ const createUser = async (email, password) => {
 
     const body = { email, password: passwordHash };
 
-    const user = await repository.createUser(body);
+    const result = await repository.createUser(body);
 
-    return user;
+    return result;
   } catch (error) {
     throw error;
   }
@@ -39,9 +39,9 @@ const createUser = async (email, password) => {
 
 const updateUser = async () => {
   try {
-    const users = await repository.updateUser();
+    const result = await repository.updateUser();
 
-    return users;
+    return result;
   } catch (error) {
     throw error;
   }
@@ -49,9 +49,9 @@ const updateUser = async () => {
 
 const deleteUser = async () => {
   try {
-    const user = await repository.deleteUser();
+    const result = await repository.deleteUser();
 
-    return user;
+    return result;
   } catch (error) {
     throw error;
   }

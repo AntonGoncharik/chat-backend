@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 
-const ErrorApp = require('../errors/error');
+const ErrorApp = require('../errors/error-app');
 
 const repository = require('./repository');
 

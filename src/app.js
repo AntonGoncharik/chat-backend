@@ -1,14 +1,16 @@
 const express = require('express');
 
-const checkUser = require('./users/middleware');
-
 const router = require('./router');
+const usersMiddleware = require('./users/middleware');
+const errorsMiddleware = require('./errors/middleware');
 
 const app = express();
+
 app.disable('x-powered-by');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/', checkUser);
+app.use(usersMiddleware.checkUser);
 app.use('/', router);
+app.use(errorsMiddleware.sendError);
 
 module.exports = app;

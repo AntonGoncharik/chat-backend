@@ -1,18 +1,17 @@
 const bcrypt = require('bcrypt');
 
-const throwError = require('../errors/throw-error');
-// const serviceAuth = require('../auth/service');
+const ErrorApp = require('../errors/error-app');
 
 const repository = require('./repository');
 
 const createUser = async (email, password) => {
   try {
     if (!email) {
-      throwError('Not transferred Email', 400);
+      throw new ErrorApp('Not transferred Email', 400);
     }
 
     if (!password) {
-      throwError('Not transferred password', 400);
+      throw new ErrorApp('Not transferred password', 400);
     }
 
     const salt = await bcrypt.genSalt();
@@ -21,8 +20,6 @@ const createUser = async (email, password) => {
     const body = { email, password: passwordHash };
 
     const user = await repository.createUser(body);
-
-    // const tokens = await serviceAuth.loginUser();
 
     return user;
   } catch (error) {

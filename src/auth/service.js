@@ -2,32 +2,29 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const journal = require('../modules/logger');
-const throwError = require('../errors/throw-error');
-const { routes } = require('../config');
+const ErrorApp = require('../errors/error-app');
 
-const {
-  tokenKey, refreshTokenKey, algorithm, tokenLiveTimeMs,
-} = require('./constants');
+const { tokenKey, refreshTokenKey, algorithm } = require('./constants');
 const repository = require('../users/repository');
 
 const loginUser = async (email, password) => {
   try {
     if (!email) {
-      throwError('Not transferred Email', 400);
+      throw new ErrorApp('Not transferred Email', 400);
     }
 
     if (!password) {
-      throwError('Not transferred password', 400);
+      throw new ErrorApp('Not transferred password', 400);
     }
 
     const user = await repository.getUserByEmail(email);
 
     if (!user) {
-      throwError('User not found', 404);
+      throw new ErrorApp('User not found', 404);
     }
 
     if (!bcrypt.compareSync(password, user.password)) {
-      throwError('Wrong password', 401);
+      throw new ErrorApp('Wrong password', 401);
     }
 
     const token = jwt.sign({
@@ -49,7 +46,7 @@ const loginUser = async (email, password) => {
 const logoutUser = async (token, refreshToken) => {
   try {
     if (!token) {
-      throwError('Not transferred token', 400);
+      throw new ErrorApp('Not transferred token', 400);
     }
 
     await repository.logoutUser(token, refreshToken);
@@ -58,51 +55,7 @@ const logoutUser = async (token, refreshToken) => {
   }
 };
 
-const checkUser = (req, res, next) => {
-  if (req.headers.authorization) {
-    jwt.verify(req.headers.authorization.split(' ')[1],
-      tokenKey, { algorithms: [algorithm] }, async (err, payload) => {
-        if (err) {
-          journal.auth.error(`CHECK USER TOKEN ${req.headers.authorization}`);
-          next({ code: 401, message: 'Invalid token' });
-          return;
-        }
-
-        if (payload && !payload.id) {
-          journal.auth.error('TOKEN IS NOT CONTAIN USER ID');
-          next({ code: 401, message: 'Invalid token' });
-          return;
-        }
-
-        if (payload.date + tokenLiveTimeMs < Date.now()) {
-          journal.auth.error('TOKEN IS DEAD');
-          next({ code: 401, message: 'Token is dead' });
-          return;
-        }
-
-        try {
-          const user = await repository.getUserById(payload.id);
-
-          if (!user) {
-            throwError('User not found', 404);
-          }
-
-          next();
-        } catch (error) {
-          journal.auth.error(`CHECK USER TOKEN ${error}`);
-          next(error);
-        }
-      });
-  } else if ((req.url === routes.users.main && req.method === 'POST')
-    || req.url === routes.authorize.login) {
-    next();
-  } else {
-    next({ code: 401, message: 'Invalid token' });
-  }
-};
-
 module.exports = {
   loginUser,
   logoutUser,
-  checkUser,
 };

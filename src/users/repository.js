@@ -20,6 +20,16 @@ const getUserByEmail = async (email) => {
   }
 };
 
+const getUsers = async () => {
+  try {
+    const result = await User.find();
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const createUser = async (data) => {
   try {
     const result = await new User(data).save();
@@ -30,8 +40,31 @@ const createUser = async (data) => {
   }
 };
 
+const updateUser = async (id, data) => {
+  try {
+    const result = await User.findByIdAndUpdate(id, data, { new: true });
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const deleteUser = async (id) => {
+  try {
+    const result = await User.deleteOne(id);
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   getUserById,
   getUserByEmail,
+  getUsers,
   createUser,
+  updateUser,
+  deleteUser,
 };

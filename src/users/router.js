@@ -7,6 +7,18 @@ const service = require('./service');
 
 const router = express.Router();
 
+router.route('/').get(async (req, res, next) => {
+  try {
+    const users = await service.getUsers();
+    journal.auth.info('GET RETURN USERS');
+
+    res.status(200).json(users);
+  } catch (error) {
+    journal.auth.error(`GET RETURN USERS ${error}`);
+    next(error);
+  }
+});
+
 router.route('/').post(async (req, res, next) => {
   try {
     const user = await service.createUser(req.body.email, req.body.password);
@@ -19,14 +31,26 @@ router.route('/').post(async (req, res, next) => {
   }
 });
 
-router.route('/').get(async (req, res, next) => {
+router.route('/').patch(async (req, res, next) => {
   try {
-    const users = await service.getUsers();
-    journal.auth.info('GET RETURN USERS');
+    const user = await service.updateUser();
+    journal.auth.info('PATCH UPDATE USER');
 
-    res.status(200).json(users);
+    res.status(200).json(user);
   } catch (error) {
-    journal.auth.error(`GET RETURN USERS ${error}`);
+    journal.auth.error(`PATCH UPDATE USER ${error}`);
+    next(error);
+  }
+});
+
+router.route('/').delete(async (req, res, next) => {
+  try {
+    const user = await service.deleteUser();
+    journal.auth.info('DELETE USER');
+
+    res.status(200).json(user);
+  } catch (error) {
+    journal.auth.error(`DELETE USER ${error}`);
     next(error);
   }
 });

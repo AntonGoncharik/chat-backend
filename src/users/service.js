@@ -1,8 +1,18 @@
 const bcrypt = require('bcrypt');
 
-const ErrorApp = require('../errors/error-app');
+const ErrorApp = require('../errors/error');
 
 const repository = require('./repository');
+
+const getUsers = async () => {
+  try {
+    const users = await repository.getUsers();
+
+    return users;
+  } catch (error) {
+    throw error;
+  }
+};
 
 const createUser = async (email, password) => {
   try {
@@ -27,9 +37,9 @@ const createUser = async (email, password) => {
   }
 };
 
-const getUsers = async () => {
+const updateUser = async () => {
   try {
-    const users = [1, 2, 3];
+    const users = await repository.updateUser();
 
     return users;
   } catch (error) {
@@ -37,7 +47,19 @@ const getUsers = async () => {
   }
 };
 
+const deleteUser = async () => {
+  try {
+    const user = await repository.deleteUser();
+
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
-  createUser,
   getUsers,
+  createUser,
+  updateUser,
+  deleteUser,
 };

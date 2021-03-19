@@ -1,13 +1,13 @@
 const { Schema } = require('mongoose');
 
 module.exports = {
-  idUser: {
+  userId: {
     type: Schema.Types.ObjectId,
     ref: 'Users',
     required: true,
     index: true,
   },
-  idRoom: {
+  roomId: {
     type: Schema.Types.ObjectId,
     ref: 'Rooms',
     required: true,

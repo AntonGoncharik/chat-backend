@@ -1,8 +1,14 @@
+const ErrorApp = require('../errors/error-app');
+
 const repository = require('./repository');
 
-const getMessages = async () => {
+const getMessages = async (roomId, page, records) => {
   try {
-    const result = await repository.getMessages();
+    if (!roomId) {
+      throw new ErrorApp('Not transferred room id', 400);
+    }
+
+    const result = await repository.getMessages(roomId, page, records);
 
     return result;
   } catch (error) {
@@ -10,9 +16,25 @@ const getMessages = async () => {
   }
 };
 
-const createMessage = async () => {
+const createMessage = async (data) => {
   try {
-    const result = await repository.createMessage();
+    if (!data.userId) {
+      throw new ErrorApp('Not transferred user id', 400);
+    }
+    if (!data.roomId) {
+      throw new ErrorApp('Not transferred room id', 400);
+    }
+    if (!data.text) {
+      throw new ErrorApp('Not transferred text message', 400);
+    }
+
+    const dataMessage = {
+      userId: data.userId,
+      roomId: data.roomId,
+      text: data.text,
+    };
+
+    const result = await repository.createMessage(dataMessage);
 
     return result;
   } catch (error) {
@@ -20,9 +42,9 @@ const createMessage = async () => {
   }
 };
 
-const updateMessage = async () => {
+const updateMessage = async (data) => {
   try {
-    const result = await repository.updateMessage();
+    const result = await repository.updateMessage(data.id, data);
 
     return result;
   } catch (error) {
@@ -30,9 +52,13 @@ const updateMessage = async () => {
   }
 };
 
-const deleteMessage = async () => {
+const deleteMessage = async (id) => {
   try {
-    const result = await repository.deleteMessage();
+    if (!id) {
+      throw new ErrorApp('Not transferred message id', 400);
+    }
+
+    const result = await repository.deleteMessage(id);
 
     return result;
   } catch (error) {

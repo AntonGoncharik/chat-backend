@@ -34,11 +34,11 @@ const createRoom = async (name, userId) => {
 
 const updateRoom = async (data) => {
   try {
-    if (!data.roomId) {
+    if (!data.id) {
       throw new ErrorApp('Not transferred room id', 400);
     }
 
-    const resultRoom = await repository.getRoomById(data.roomId);
+    const resultRoom = await repository.getRoomById(data.id);
 
     if (!resultRoom) {
       throw new ErrorApp('Room not found', 404);
@@ -64,7 +64,7 @@ const updateRoom = async (data) => {
       updateData.users = resultRoom.users.filter((item) => item.userId !== data.userId);
     }
 
-    const result = await repository.updateRoom(data.roomId, updateData);
+    const result = await repository.updateRoom(data.id, updateData);
 
     return result;
   } catch (error) {

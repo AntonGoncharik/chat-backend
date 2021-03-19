@@ -10,9 +10,12 @@ const getMessageById = async (id) => {
   }
 };
 
-const getMessages = async () => {
+const getMessages = async (roomId, page = 1, records = 20) => {
   try {
-    const result = await Messages.find();
+    const result = await Messages
+      .find({ roomId }, { __v: 0 })
+      .limit(records)
+      .skip(records * (page - 1));
 
     return result;
   } catch (error) {

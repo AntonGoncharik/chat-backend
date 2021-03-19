@@ -44,6 +44,15 @@ const createMessage = async (data) => {
 
 const updateMessage = async (data) => {
   try {
+    if (!data.id) {
+      throw new ErrorApp('Not transferred message id', 400);
+    }
+
+    const resultMessage = await repository.getMessageById(data.id);
+
+    if (!resultMessage) {
+      throw new ErrorApp('Message not found', 404);
+    }
     const result = await repository.updateMessage(data.id, data);
 
     return result;

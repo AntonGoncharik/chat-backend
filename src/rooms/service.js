@@ -18,6 +18,9 @@ const getRooms = async (userId, page, records) => {
 
 const createRoom = async (name, userId) => {
   try {
+    if (!userId) {
+      throw new ErrorApp('Not transferred user id', 400);
+    }
     if (!name) {
       throw new ErrorApp('Not transferred name of room', 400);
     }

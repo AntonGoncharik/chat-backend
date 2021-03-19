@@ -10,9 +10,12 @@ const getRoomById = async (id) => {
   }
 };
 
-const getRooms = async (userId) => {
+const getRooms = async (userId, page = 1, records = 10) => {
   try {
-    const result = await Rooms.find({ 'users.userId': userId });
+    const result = await Rooms
+      .find({ 'users.userId': userId }, { __v: 0 })
+      .limit(records)
+      .skip(records * (page - 1));
 
     return result;
   } catch (error) {

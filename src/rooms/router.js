@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.route('/').get(async (req, res, next) => {
   try {
-    const rooms = await service.getRooms(req.body.userId);
+    const rooms = await service.getRooms(req.query.userId, req.query.page, req.query.records);
     journal.rooms.info('GET RETURN ROOMS');
 
     res.status(200).json(rooms);

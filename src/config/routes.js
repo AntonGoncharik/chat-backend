@@ -6,4 +6,10 @@ module.exports = {
   users: {
     main: '/users',
   },
+  rooms: {
+    main: '/rooms',
+  },
+  messages: {
+    main: '/messages',
+  },
 };

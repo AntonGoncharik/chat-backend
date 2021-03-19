@@ -1,8 +1,14 @@
+const ErrorApp = require('../errors/error-app');
+
 const repository = require('./repository');
 
-const getRooms = async () => {
+const getRooms = async (userId) => {
   try {
-    const result = await repository.getRooms();
+    if (userId) {
+      throw new ErrorApp('Not transferred user id', 400);
+    }
+
+    const result = await repository.getRooms(userId);
 
     return result;
   } catch (error) {
@@ -10,9 +16,15 @@ const getRooms = async () => {
   }
 };
 
-const createRoom = async () => {
+const createRoom = async (name, userId) => {
   try {
-    const result = await repository.createRoom();
+    if (!name) {
+      throw new ErrorApp('Not transferred name of room', 400);
+    }
+
+    const data = { name, users: [{ userId, lastReadMessageId: null }] };
+
+    const result = await repository.createRoom(data);
 
     return result;
   } catch (error) {
@@ -20,9 +32,39 @@ const createRoom = async () => {
   }
 };
 
-const updateRoom = async () => {
+const updateRoom = async (data) => {
   try {
-    const result = await repository.updateRoom();
+    if (!data.roomId) {
+      throw new ErrorApp('Not transferred room id', 400);
+    }
+
+    const resultRoom = await repository.getRoomById(data.roomId);
+
+    if (!resultRoom) {
+      throw new ErrorApp('Room not found', 404);
+    }
+
+    const updateData = {};
+    if (data.name) {
+      updateData.name = data.name;
+    }
+    if (data.userId && data.addUser) {
+      updateData.users = [
+        ...resultRoom.users,
+        { userId: data.userId, lastReadMessageId: null },
+      ];
+    }
+    if (data.userId && data.updateUser) {
+      updateData.users = [
+        ...resultRoom.users.filter((item) => item.userId !== data.userId),
+        { userId: data.userId, lastReadMessageId: data.lastReadMessageId },
+      ];
+    }
+    if (data.userId && data.deleteUser) {
+      updateData.users = resultRoom.users.filter((item) => item.userId !== data.userId);
+    }
+
+    const result = await repository.updateRoom(data.roomId, updateData);
 
     return result;
   } catch (error) {
@@ -30,9 +72,9 @@ const updateRoom = async () => {
   }
 };
 
-const deleteRoom = async () => {
+const deleteRoom = async (id) => {
   try {
-    const result = await repository.deleteRoom();
+    const result = await repository.deleteRoom(id);
 
     return result;
   } catch (error) {

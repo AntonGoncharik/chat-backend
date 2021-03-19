@@ -24,6 +24,12 @@ const createUser = async (email, password) => {
       throw new ErrorApp('Not transferred password', 400);
     }
 
+    const resultUser = await repository.getUserByEmail(email);
+
+    if (resultUser) {
+      throw new ErrorApp(`User with ${email} email exists`, 400);
+    }
+
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 

@@ -24,9 +24,9 @@ const createUser = async (email, password) => {
       throw new ErrorApp('Not transferred password', 400);
     }
 
-    const resultUser = await repository.getUserByEmail(email);
+    const user = await repository.getUserByEmail(email);
 
-    if (resultUser) {
+    if (user) {
       throw new ErrorApp(`User with ${email} email exists`, 400);
     }
 

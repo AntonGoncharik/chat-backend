@@ -4,9 +4,14 @@ const ErrorApp = require('../errors/error-app');
 
 const repository = require('./repository');
 
-const getUsers = async () => {
+const getUsers = async (page = 1, records = 20, token) => {
   try {
-    const result = await repository.getUsers();
+    let result = [];
+    if (page && records) {
+      result = await repository.getUsers(+page, +records);
+    } else {
+      result = await repository.getUserByToken(token);
+    }
 
     return result;
   } catch (error) {

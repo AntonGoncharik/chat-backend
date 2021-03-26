@@ -20,9 +20,22 @@ const getUserByEmail = async (email) => {
   }
 };
 
-const getUsers = async () => {
+const getUserByToken = async (token) => {
   try {
-    const result = await User.find();
+    const result = await User.findOne({ token });
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getUsers = async (page, records) => {
+  try {
+    const result = await User
+      .find()
+      .limit(records)
+      .skip(records * (page - 1));
 
     return result;
   } catch (error) {
@@ -63,6 +76,7 @@ const deleteUser = async (id) => {
 module.exports = {
   getUserById,
   getUserByEmail,
+  getUserByToken,
   getUsers,
   createUser,
   updateUser,

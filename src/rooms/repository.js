@@ -10,7 +10,7 @@ const getRoomById = async (id) => {
   }
 };
 
-const getRooms = async (userId, page = 1, records = 20) => {
+const getRooms = async (userId, page, records) => {
   try {
     const result = await Rooms
       .find({ 'users.userId': userId }, { __v: 0 })

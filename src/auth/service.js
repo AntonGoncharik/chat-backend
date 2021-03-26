@@ -33,6 +33,8 @@ const loginUser = async (email, password) => {
 
     const refreshToken = jwt.sign({ id: user.id }, refreshTokenKey, { algorithm });
 
+    await repository.updateUser(user.id, { token });
+
     return {
       user,
       token,

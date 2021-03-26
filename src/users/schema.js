@@ -18,4 +18,11 @@ module.exports = {
     index: true,
     default: '',
   },
+  token: {
+    type: String,
+    unique: false,
+    required: false,
+    index: true,
+    default: '',
+  },
 };

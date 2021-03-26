@@ -2,13 +2,13 @@ const ErrorApp = require('../errors/error-app');
 
 const repository = require('./repository');
 
-const getRooms = async (userId, page, records) => {
+const getRooms = async (userId, page = 1, records = 20) => {
   try {
     if (userId) {
       throw new ErrorApp('Not transferred user id', 400);
     }
 
-    const result = await repository.getRooms(userId, page, records);
+    const result = await repository.getRooms(userId, +page, +records);
 
     return result;
   } catch (error) {

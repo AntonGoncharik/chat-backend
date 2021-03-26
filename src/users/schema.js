@@ -18,7 +18,7 @@ module.exports = {
     index: true,
     default: '',
   },
-  token: {
+  refreshToken: {
     type: String,
     unique: false,
     required: false,

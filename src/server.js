@@ -11,7 +11,7 @@ app.io = io;
 
 const start = async () => {
   try {
-    await mongoose.connect(config.db.url, config.db.connectionOptions);
+    await mongoose.connect(config.db.url, config.db.options);
     journal.server.info('DB CONNECTED');
 
     server.listen(config.server.port, () => {

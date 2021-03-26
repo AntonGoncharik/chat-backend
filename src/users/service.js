@@ -1,16 +1,19 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const ErrorApp = require('../errors/error-app');
 
 const repository = require('./repository');
 
-const getUsers = async (page = 1, records = 20, token) => {
+const getUsers = async (query, token) => {
   try {
     let result = [];
-    if (page && records) {
-      result = await repository.getUsers(+page, +records);
+    if (query.token) {
+      const decodedPayload = jwt.decode(token, { json: true });
+
+      result = await repository.getUserById(decodedPayload.id);
     } else {
-      result = await repository.getUserByToken(token);
+      result = await repository.getUsers(+query.page, +query.records);
     }
 
     return result;

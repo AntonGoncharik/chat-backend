@@ -20,16 +20,6 @@ const getUserByEmail = async (email) => {
   }
 };
 
-const getUserByToken = async (token) => {
-  try {
-    const result = await User.findOne({ token });
-
-    return result;
-  } catch (error) {
-    throw error;
-  }
-};
-
 const getUsers = async (page, records) => {
   try {
     const result = await User
@@ -76,7 +66,6 @@ const deleteUser = async (id) => {
 module.exports = {
   getUserById,
   getUserByEmail,
-  getUserByToken,
   getUsers,
   createUser,
   updateUser,

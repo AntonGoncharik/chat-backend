@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.route('/').get(async (req, res, next) => {
   try {
-    const users = await service.getUsers(req.query.page, req.query.records, req.headers.authorization.split(' ')[1]);
+    const users = await service.getUsers(req.query, req.headers.authorization.split(' ')[1]);
     journal.auth.info('GET RETURN USERS');
 
     res.status(200).json(users);

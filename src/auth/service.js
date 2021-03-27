@@ -1,11 +1,10 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-const journal = require('../modules/logger');
 const ErrorApp = require('../errors/error-app');
+const repository = require('../users/repository');
 
 const { tokenKey, refreshTokenKey, algorithm } = require('./constants');
-const repository = require('../users/repository');
 
 const loginUser = async (email, password) => {
   try {
@@ -45,13 +44,13 @@ const loginUser = async (email, password) => {
   }
 };
 
-const logoutUser = async (token, refreshToken) => {
+const logoutUser = async (id) => {
   try {
-    if (!token) {
-      throw new ErrorApp('Not transferred token', 400);
+    if (!id) {
+      throw new ErrorApp('Not transferred user id', 400);
     }
 
-    await repository.logoutUser(token, refreshToken);
+    await repository.updateUser(id, { refreshToken: '' });
   } catch (error) {
     throw error;
   }

@@ -21,12 +21,12 @@ router.route(routes.authorize.login).post(async (req, res, next) => {
 
 router.route(routes.authorize.logout).post(async (req, res, next) => {
   try {
-    await service.logoutUser(req.body.fbToken, req.body.refreshToken);
-    journal.auth.info(`POST LOGOUT USER ${req.user.id} TOKEN ${req.body.fbToken}`);
+    await service.logoutUser(req.body.id);
+    journal.auth.info(`POST LOGOUT USER ${req.body.id}`);
 
     res.status(200).json({});
   } catch (error) {
-    journal.auth.error(`POST LOGOUT USER ${req.user.email} TOKEN ${req.body.fbToken} ${error}`);
+    journal.auth.error(`POST LOGOUT USER ${req.body.id} ${error}`);
     next(error);
   }
 });

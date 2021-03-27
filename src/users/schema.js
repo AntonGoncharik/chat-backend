@@ -18,6 +18,13 @@ module.exports = {
     index: true,
     default: '',
   },
+  description: {
+    type: String,
+    unique: false,
+    required: false,
+    index: true,
+    default: '',
+  },
   refreshToken: {
     type: String,
     unique: false,

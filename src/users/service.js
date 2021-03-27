@@ -51,9 +51,13 @@ const createUser = async (email, password) => {
   }
 };
 
-const updateUser = async () => {
+const updateUser = async (id, data) => {
   try {
-    const result = await repository.updateUser();
+    if (!id) {
+      throw new ErrorApp('Not transferred user id', 400);
+    }
+
+    const result = await repository.updateUser(id, data);
 
     return result;
   } catch (error) {

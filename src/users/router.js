@@ -33,7 +33,7 @@ router.route('/').post(async (req, res, next) => {
 
 router.route('/').patch(async (req, res, next) => {
   try {
-    const user = await service.updateUser();
+    const user = await service.updateUser(req.body.id, req.body.data);
     journal.auth.info('PATCH UPDATE USER');
 
     res.status(200).json(user);

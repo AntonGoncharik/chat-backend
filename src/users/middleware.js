@@ -37,7 +37,7 @@ const checkUser = (req, res, next) => {
         next(error);
       }
     });
-  } else if ((req.url === routes.users.main && req.method === 'POST') || req.url === routes.authorize.login) {
+  } else if ((req.url === routes.users.main && req.method === 'POST') || req.url === routes.authorize.signin) {
     next();
   } else {
     next(new ErrorApp('Invalid token', 401));

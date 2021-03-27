@@ -6,7 +6,7 @@ const repository = require('../users/repository');
 
 const { tokenKey, refreshTokenKey, algorithm } = require('./constants');
 
-const loginUser = async (email, password) => {
+const signinUser = async (email, password) => {
   try {
     if (!email) {
       throw new ErrorApp('Not transferred Email', 400);
@@ -44,7 +44,7 @@ const loginUser = async (email, password) => {
   }
 };
 
-const logoutUser = async (id) => {
+const signoutUser = async (id) => {
   try {
     if (!id) {
       throw new ErrorApp('Not transferred user id', 400);
@@ -57,6 +57,6 @@ const logoutUser = async (id) => {
 };
 
 module.exports = {
-  loginUser,
-  logoutUser,
+  signinUser,
+  signoutUser,
 };

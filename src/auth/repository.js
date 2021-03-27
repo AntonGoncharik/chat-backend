@@ -1,9 +1,9 @@
-const loginUser = async () => {
+const signinUser = async () => {
   const user = {};
 
   return user;
 };
 
 module.exports = {
-  loginUser,
+  signinUser,
 };

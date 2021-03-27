@@ -1,7 +1,7 @@
 module.exports = {
   authorize: {
-    login: '/login',
-    logout: '/logout',
+    signin: '/signin',
+    signout: '/signout',
   },
   users: {
     main: '/users',

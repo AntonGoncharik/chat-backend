@@ -16,25 +16,21 @@ const getMessages = async (roomId, page, records) => {
   }
 };
 
-const createMessage = async (data) => {
+const createMessage = async (userId, roomId, text) => {
   try {
-    if (!data.userId) {
+    if (!userId) {
       throw new ErrorApp('Not transferred user id', 400);
     }
-    if (!data.roomId) {
+    if (!roomId) {
       throw new ErrorApp('Not transferred room id', 400);
     }
-    if (!data.text) {
+    if (!text) {
       throw new ErrorApp('Not transferred text message', 400);
     }
 
-    const dataMessage = {
-      userId: data.userId,
-      roomId: data.roomId,
-      text: data.text,
-    };
+    const body = { userId, roomId, text };
 
-    const result = await repository.createMessage(dataMessage);
+    const result = await repository.createMessage(body);
 
     return result;
   } catch (error) {

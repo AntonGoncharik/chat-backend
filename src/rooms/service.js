@@ -25,9 +25,9 @@ const createRoom = async (name, userId) => {
       throw new ErrorApp('Not transferred name of room', 400);
     }
 
-    const data = { name, users: [{ userId, lastReadMessageId: null }] };
+    const body = { name, users: [{ userId, lastReadMessageId: null }] };
 
-    const result = await repository.createRoom(data);
+    const result = await repository.createRoom(body);
 
     return result;
   } catch (error) {
@@ -35,39 +35,39 @@ const createRoom = async (name, userId) => {
   }
 };
 
-const updateRoom = async (data) => {
+const updateRoom = async (id, data) => {
   try {
-    if (!data.id) {
+    if (!id) {
       throw new ErrorApp('Not transferred room id', 400);
     }
 
-    const resultRoom = await repository.getRoomById(data.id);
+    const resultRoom = await repository.getRoomById(id);
 
     if (!resultRoom) {
       throw new ErrorApp('Room not found', 404);
     }
 
-    const updateData = {};
+    const body = {};
     if (data.name) {
-      updateData.name = data.name;
+      body.name = data.name;
     }
     if (data.userId && data.addUser) {
-      updateData.users = [
+      body.users = [
         ...resultRoom.users,
         { userId: data.userId, lastReadMessageId: null },
       ];
     }
     if (data.userId && data.updateUser) {
-      updateData.users = [
+      body.users = [
         ...resultRoom.users.filter((item) => item.userId !== data.userId),
         { userId: data.userId, lastReadMessageId: data.lastReadMessageId },
       ];
     }
     if (data.userId && data.deleteUser) {
-      updateData.users = resultRoom.users.filter((item) => item.userId !== data.userId);
+      body.users = resultRoom.users.filter((item) => item.userId !== data.userId);
     }
 
-    const result = await repository.updateRoom(data.id, updateData);
+    const result = await repository.updateRoom(id, body);
 
     return result;
   } catch (error) {

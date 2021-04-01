@@ -8,7 +8,6 @@ const listenSocket = require('./socket');
 
 const server = http.createServer(app);
 const io = require('socket.io')(server);
-app.io = io;
 
 const start = async () => {
   try {
@@ -16,10 +15,9 @@ const start = async () => {
     journal.server.info('DB CONNECTED');
 
     server.listen(config.server.port, () => {
+      listenSocket(io);
       journal.server.info(`SERVER LAUNCHED ON PORT ${config.server.port}`);
     });
-
-    listenSocket(io);
   } catch (error) {
     journal.server.error(`ERROR CONNECTION SERVER/DB==${error}`);
   }

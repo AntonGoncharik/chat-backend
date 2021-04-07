@@ -4,7 +4,7 @@ const repository = require('./repository');
 
 const getRooms = async (userId, page = 1, records = 20) => {
   try {
-    if (userId) {
+    if (!userId) {
       throw new ErrorApp('Not transferred user id', 400);
     }
 

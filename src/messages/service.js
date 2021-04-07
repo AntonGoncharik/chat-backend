@@ -2,13 +2,13 @@ const ErrorApp = require('../errors/error-app');
 
 const repository = require('./repository');
 
-const getMessages = async (roomId, page, records) => {
+const getMessages = async (roomId, page = 1, records = 20) => {
   try {
     if (!roomId) {
       throw new ErrorApp('Not transferred room id', 400);
     }
 
-    const result = await repository.getMessages(roomId, page, records);
+    const result = await repository.getMessages(roomId, +page, +records);
 
     return result;
   } catch (error) {

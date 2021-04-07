@@ -12,6 +12,7 @@ const listenSocket = (io) => {
     });
     socket.on('users:connect', (userId) => {
       usersSocket.connectUser(io);
+      roomsSocket.joinUserToRooms(io, socket.id, userId);
       socketList = [...socketList, { socketId: socket.id, userId: userId }];
     });
     socket.on('rooms:create', (hostId, guestId, name) => {

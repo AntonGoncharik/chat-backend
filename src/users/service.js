@@ -22,6 +22,16 @@ const getUsers = async (query, token) => {
   }
 };
 
+const getCountUsers = async () => {
+  try {
+    const result = await repository.getCountUsers();
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const createUser = async (email, password) => {
   try {
     if (!email) {
@@ -77,6 +87,7 @@ const deleteUser = async () => {
 
 module.exports = {
   getUsers,
+  getCountUsers,
   createUser,
   updateUser,
   deleteUser,

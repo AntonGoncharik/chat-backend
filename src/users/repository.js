@@ -33,6 +33,16 @@ const getUsers = async (page, records) => {
   }
 };
 
+const getCountUsers = async () => {
+  try {
+    const result = await User.count();
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const createUser = async (data) => {
   try {
     const result = await new User(data).save();
@@ -67,6 +77,7 @@ module.exports = {
   getUserById,
   getUserByEmail,
   getUsers,
+  getCountUsers,
   createUser,
   updateUser,
   deleteUser,

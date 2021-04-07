@@ -1,8 +1,8 @@
 const service = require('./service');
 
-const createRoom = async (io, socketList, hostId, guestId) => {
+const createRoom = async (io, socketList, hostId, guestId, name) => {
   try {
-    const room = await service.createRoom('test', hostId);
+    const room = await service.createRoom(name, hostId);
     const updatedRoom = await addToRoom(room._id.toString(), guestId);
 
     const host = socketList.find((item) => item.userId === hostId);
@@ -42,4 +42,18 @@ const sendRoom = (io, type, room) => {
   io.to(room._id.toString()).emit(type, room);
 };
 
-module.exports = { createRoom, updateRoom };
+const joinUserToRooms = async (io, socketId, userId) => {
+  try {
+    const rooms = await service.getRooms(userId, 1, 100000);
+
+    if (rooms.length) {
+      rooms.forEach((item) => {
+        joinToRoom(io, socketId, item);
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { createRoom, updateRoom, joinUserToRooms };

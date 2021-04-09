@@ -26,13 +26,15 @@ const signinUser = async (email, password) => {
       throw new ErrorApp('Wrong password', 401);
     }
 
+    delete user.password;
+
     const token = jwt.sign({
-      id: user.id, date: Date.now(), typ: 'JWT', sub: 'auth',
+      id: user._id, date: Date.now(), typ: 'JWT', sub: 'auth',
     }, tokenKey, { algorithm });
 
-    const refreshToken = jwt.sign({ id: user.id }, refreshTokenKey, { algorithm });
+    const refreshToken = jwt.sign({ id: user._id }, refreshTokenKey, { algorithm });
 
-    await repository.updateUser(user.id, { refreshToken });
+    await repository.updateUser(user._id, { refreshToken });
 
     return {
       user,

@@ -12,7 +12,7 @@ const getUserById = async (id) => {
 
 const getUserByEmail = async (email) => {
   try {
-    const result = await User.findOne({ email }, { __v: 0, password: 0 }).lean();
+    const result = await User.findOne({ email }, { __v: 0 }).lean();
 
     return result;
   } catch (error) {

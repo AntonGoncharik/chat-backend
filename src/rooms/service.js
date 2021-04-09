@@ -1,5 +1,4 @@
 const ErrorApp = require('../errors/error-app');
-
 const repository = require('./repository');
 
 const getRooms = async (userId, page = 1, records = 20) => {

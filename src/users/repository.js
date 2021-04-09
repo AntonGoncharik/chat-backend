@@ -2,7 +2,7 @@ const User = require('./model');
 
 const getUserById = async (id) => {
   try {
-    const result = await User.findById(id);
+    const result = await User.findById(id, { __v: 0, password: 0 }).lean();
 
     return result;
   } catch (error) {
@@ -12,7 +12,7 @@ const getUserById = async (id) => {
 
 const getUserByEmail = async (email) => {
   try {
-    const result = await User.findOne({ email });
+    const result = await User.findOne({ email }, { __v: 0, password: 0 }).lean();
 
     return result;
   } catch (error) {
@@ -23,9 +23,10 @@ const getUserByEmail = async (email) => {
 const getUsers = async (page, records) => {
   try {
     const result = await User
-      .find()
+      .find({}, { __v: 0, password: 0 })
       .limit(records)
-      .skip(records * (page - 1));
+      .skip(records * (page - 1))
+      .lean();
 
     return result;
   } catch (error) {
@@ -35,7 +36,7 @@ const getUsers = async (page, records) => {
 
 const getCountUsers = async () => {
   try {
-    const result = await User.count();
+    const result = await User.count().lean();
 
     return result;
   } catch (error) {
@@ -65,9 +66,9 @@ const updateUser = async (id, data) => {
 
 const deleteUser = async (id) => {
   try {
-    const result = await User.deleteOne(id);
+    await User.deleteOne(id);
 
-    return result;
+    return id;
   } catch (error) {
     throw error;
   }

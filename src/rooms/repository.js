@@ -2,7 +2,7 @@ const Rooms = require('./model');
 
 const getRoomById = async (id) => {
   try {
-    const result = await Rooms.findById(id);
+    const result = await Rooms.findById(id, { __v: 0 }).lean();
 
     return result;
   } catch (error) {
@@ -15,7 +15,8 @@ const getRooms = async (userId, page, records) => {
     const result = await Rooms
       .find({ 'users.userId': userId }, { __v: 0 })
       .limit(records)
-      .skip(records * (page - 1));
+      .skip(records * (page - 1))
+      .lean();
 
     return result;
   } catch (error) {
@@ -45,9 +46,9 @@ const updateRoom = async (id, data) => {
 
 const deleteRoom = async (id) => {
   try {
-    const result = await Rooms.deleteOne(id);
+    await Rooms.deleteOne(id);
 
-    return result;
+    return id;
   } catch (error) {
     throw error;
   }

@@ -31,16 +31,16 @@ const checkUser = (req, res, next) => {
           throw new ErrorApp('User not found', 404);
         }
 
-        next();
+        return next();
       } catch (error) {
         journal.auth.error(`CHECK USER TOKEN ${error}`);
-        next(error);
+        return next(error);
       }
     });
   } else if ((req.url === routes.users.main && req.method === 'POST') || req.url === routes.authorize.signin) {
-    next();
+    return next();
   } else {
-    next(new ErrorApp('Invalid token', 401));
+    return next(new ErrorApp('Invalid token', 401));
   }
 };
 

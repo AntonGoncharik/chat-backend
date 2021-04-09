@@ -2,7 +2,7 @@ const Messages = require('./model');
 
 const getMessageById = async (id) => {
   try {
-    const result = await Messages.findById(id);
+    const result = await Messages.findById(id, { __v: 0 }).lean();
 
     return result;
   } catch (error) {
@@ -15,7 +15,8 @@ const getMessages = async (roomId, page = 1, records = 20) => {
     const result = await Messages
       .find({ roomId }, { __v: 0 })
       .limit(records)
-      .skip(records * (page - 1));
+      .skip(records * (page - 1))
+      .lean();
 
     return result;
   } catch (error) {
@@ -45,9 +46,9 @@ const updateMessage = async (id, data) => {
 
 const deleteMessage = async (id) => {
   try {
-    const result = await Messages.deleteOne(id);
+    await Messages.deleteOne(id);
 
-    return result;
+    return id;
   } catch (error) {
     throw error;
   }

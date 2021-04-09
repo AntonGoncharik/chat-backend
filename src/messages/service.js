@@ -1,5 +1,4 @@
 const ErrorApp = require('../errors/error-app');
-
 const repository = require('./repository');
 
 const getMessages = async (roomId, page = 1, records = 20) => {

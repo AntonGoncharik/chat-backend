@@ -1,8 +1,6 @@
 const express = require('express');
 
-const { routes } = require('../config');
 const journal = require('../modules/logger');
-
 const service = require('./service');
 
 const router = express.Router();

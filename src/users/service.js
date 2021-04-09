@@ -2,7 +2,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const ErrorApp = require('../errors/error-app');
-
 const repository = require('./repository');
 
 const getUsers = async (query, token) => {

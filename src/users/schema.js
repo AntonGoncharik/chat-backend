@@ -25,6 +25,13 @@ module.exports = {
     index: true,
     default: '',
   },
+  avatar: {
+    type: String,
+    unique: false,
+    required: false,
+    index: true,
+    default: '',
+  },
   refreshToken: {
     type: String,
     unique: false,

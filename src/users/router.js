@@ -1,6 +1,7 @@
 const express = require('express');
 
 const journal = require('../modules/logger');
+const upload = require('../modules/multer');
 const service = require('./service');
 
 const router = express.Router();
@@ -29,9 +30,9 @@ router.route('/').post(async (req, res, next) => {
   }
 });
 
-router.route('/').patch(async (req, res, next) => {
+router.route('/').patch(upload.single('avatar'), async (req, res, next) => {
   try {
-    const user = await service.updateUser(req.body.id, req.body.data);
+    const user = await service.updateUser(req.body);
     journal.auth.info('PATCH UPDATE USER');
 
     res.status(200).json(user);

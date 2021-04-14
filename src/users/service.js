@@ -60,13 +60,13 @@ const createUser = async (email, password) => {
   }
 };
 
-const updateUser = async (id, data) => {
+const updateUser = async (body) => {
   try {
-    if (!id) {
+    if (!body.id) {
       throw new ErrorApp('Not transferred user id', 400);
     }
 
-    const result = await repository.updateUser(id, data);
+    const result = await repository.updateUser(body.id, body.data || { avatar: body.avatar });
 
     return result;
   } catch (error) {

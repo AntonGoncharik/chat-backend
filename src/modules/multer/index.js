@@ -3,10 +3,10 @@ const multer = require('multer');
 const ErrorApp = require('../../errors/error-app');
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
+  destination: (req, file, cb) => {
     cb(null, `${process.env.PWD}/avatars`);
   },
-  filename: function (req, file, cb) {
+  filename: (req, file, cb) => {
     const fileName = `${Date.now()}_${file.originalname.replace(' ', '_')}`;
 
     req.body.avatar = `avatars/${fileName}`;
